@@ -112,6 +112,17 @@ const pauseSong = () => {
     audio.pause();
 };
 
+const playNextSong = () => {
+    // check if no current song playing
+    if (userData?.currentSong === null) {
+        playSong(userData?.songs[0].id);
+    } else {
+        const currentSongIndex = getCurrentSongIndex();
+        const nextSong = userData?.songs[currentSongIndex + 1];
+        playSong(nextSong.id);
+    }
+};
+
 const renderSongs = (array) => {
     const songsHTML = array.map((song) => {
         return `
@@ -137,6 +148,10 @@ const renderSongs = (array) => {
     playlistSongs.innerHTML = songsHTML;
 };
 
+const getCurrentSongIndex = () => {
+    return userData?.songs.indexOf(userData?.currentSong);
+};
+
 playButton.addEventListener('click', () => {
     if (userData?.currentSong === null) {
         playSong(userData?.songs[0].id);
@@ -146,6 +161,8 @@ playButton.addEventListener('click', () => {
 });
 
 pauseButton.addEventListener('click', pauseSong);
+
+nextButton.addEventListener('click', playNextSong);
 
 const sortSongs = () => {
     userData?.songs.sort((a, b) => {
